@@ -6,3 +6,4 @@ Operations where only one operand is required eg %,1/x are applied to light colo
   darker textfield if done after calculation has finished.
 Memory Ms show the value in memory in the light text field. M+/M- add/subtract to/from the current memory value dark field text
 Mr removes the memory.
+'calc.ico' is the icon for the calculator app and can be copied from repository
