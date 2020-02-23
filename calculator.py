@@ -5,9 +5,8 @@ import math
 root=Tk()
 root.title('Simple Calculator')
 root.iconbitmap(r'C:\Users\Ahsan.AHSAN-PC\Documents\GitHub\my-code/calc.ico')
-textFieldWidth = 50
-bWidth=10
-bHeight=2
+
+#global variables
 result=None
 operand1=None
 operand2=None
@@ -53,33 +52,28 @@ def backspace_click():
 #executes when a number key is pressed(0-9 and .)
 def number_click(value):
     global operand1,operand2,operator, result
-    num=tuple(('0','1','2','3','4','5','6','7','8','9','.'))
+    current=str(textField.get())
+    textField.delete(0,END)
 
-    if value in num: 
-        current=str(textField.get())
-        textField.delete(0,END)
+    if(operator == '='):
+        operator=None
+        operand1=None
+        operand2=None
+        savedValue.delete(0,END)
 
-        if(operator == '='): 
-            operator=None
-            operand1=None
-            operand2=None
-            savedValue.delete(0,END)
-
-            if(value =='.'):
-                textField.insert(0, '0' + value)
-            else:
-                textField.insert(0, value)
+        if(value =='.'):
+            textField.insert(0, '0' + value)
         else:
-
-            if(value =='.' and current ==''):
-                textField.insert(0, '0' + value)
-            else:
-                textField.insert(0,current+ value)
+            textField.insert(0, value)
+    else:
+        if(value =='.' and current ==''):
+            textField.insert(0, '0' + value)
+        else:
+            textField.insert(0,current+ value)
 
 # executes when an operator key is pressed (+,-,pow,*,/)
 def operator_click(value):
     global operand1,operand2,operator, result
-    op=tuple(('+','-','*',r'/','**'))
 
     if operand1 == None and operator ==None and len(textField.get())> 0:
 
@@ -103,12 +97,12 @@ def operator_click(value):
         savedValue.insert(0,str(operand1)+ value)
         textField.delete(0,END)
             
-    elif (operator in op and operand1 is not None and len(textField.get())> 0 ):
+    elif (operand1 is not None and len(textField.get())> 0 ):
 
         try:
             operand2= float(textField.get())
             textField.delete(0,END)
-            perform_calc()
+            perform_calc() #perform calc helper method sets the result
             savedValue.delete(0,END)
             savedValue.insert(0,str(result)+value)
             operator = value
@@ -126,31 +120,32 @@ def operator_click(value):
 #executes when = is pressed    
 def eq_click():
     global operand1,operand2,operator, result
-    try:
-        if operand1!=None and operator != None and  operator!= '=' and len(textField.get()) > 0:
-            operand2=float(textField.get())
-            textField.delete(0,END)
-            perform_calc()
-            savedValue.delete(0,END)
-            savedValue.insert(0,str(result))
-            operand1=result
-            operand2=None
-            result=None
-            operator='='
+    if(len(textField.get())>0):      
+        try:
+            if operand1!=None and operator != None and  operator!= '=':
+                operand2=float(textField.get())
+                textField.delete(0,END)
+                perform_calc()
+                savedValue.delete(0,END)
+                savedValue.insert(0,str(result))
+                operand1=result
+                operand2=None
+                result=None
+                operator='='
 
-        elif(operand1==None and operand2==None and len(textField.get())> 0):
-            operand1=float(textField.get())
-            operator='='
-            textField.delete(0,END)
-            savedValue.delete(0,END)
-            savedValue.insert(0,str(operand1))
+            elif(operand1==None and operand2==None) :
+                operand1=float(textField.get())
+                operator='='
+                textField.delete(0,END)
+                savedValue.delete(0,END)
+                savedValue.insert(0,str(operand1))
 
-    except ValueError as v:
-        gen_error(v)
-        return
-    except ZeroDivisionError as z:
-        gen_error(z)
-        return
+        except ValueError as v:
+            gen_error(v)
+            return
+        except ZeroDivisionError as z:
+            gen_error(z)
+            return
             
 #executes when c is pressed
 def c_click():
@@ -273,6 +268,9 @@ def mem_control_click(option):
         gen_error(v)
             
 #creating  gui elements
+textFieldWidth = 50
+bWidth=10
+bHeight=2
 textField = Entry(root,width=textFieldWidth,borderwidth=10)
 savedValue=Entry(root,width=50,borderwidth=2,bg='grey')
 button0=Button(root,text='0',width= bWidth,height= bHeight,command=lambda:number_click('0'))
