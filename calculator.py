@@ -4,7 +4,7 @@ import math
 
 root=Tk()
 root.title('Simple Calculator')
-root.iconbitmap(r'https://github.com/AAchevalwala/my-code/calc.ico')
+root.iconbitmap(r'C:\Users\Ahsan.AHSAN-PC\Documents\GitHub\my-code/calc.ico')
 textFieldWidth = 50
 bWidth=10
 bHeight=2
